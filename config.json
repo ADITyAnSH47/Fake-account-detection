@@ -1,0 +1,42 @@
+{
+  "agencies": {
+    "itbp": {
+      "name": "Indo-Tibetan Border Police",
+      "email": "itbp.cybersecurity@gov.in",
+      "priority_threshold": 0.6
+    },
+    "cybercrime": {
+      "name": "Cyber Crime Investigation Cell",
+      "email": "cybercrime@police.gov.in",
+      "priority_threshold": 0.5
+    },
+    "mha": {
+      "name": "Ministry of Home Affairs",
+      "email": "mha.security@gov.in",
+      "priority_threshold": 0.8
+    },
+    "meity": {
+      "name": "Ministry of Electronics and IT",
+      "email": "meity.cyber@gov.in",
+      "priority_threshold": 0.7
+    }
+  },
+  "platforms": {
+    "facebook": {
+      "api_endpoint": "https://graph.facebook.com/v18.0",
+      "rate_limit": 200
+    },
+    "instagram": {
+      "api_endpoint": "https://graph.instagram.com/v18.0",
+      "rate_limit": 200
+    },
+    "twitter": {
+      "api_endpoint": "https://api.twitter.com/2",
+      "rate_limit": 300
+    },
+    "linkedin": {
+      "api_endpoint": "https://api.linkedin.com/v2",
+      "rate_limit": 100
+    }
+  }
+}
