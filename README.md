@@ -5,6 +5,9 @@ This project implements a Fake Account Detection System that combines Machine Le
 It includes a backend server, ML model deployment setup, and blockchain smart contracts for decentralized trust management.
 
 video link- https://drive.google.com/file/d/1YwWp_kgcFBwmqjo2P2EQ6sWDeipjfFje/view?usp=drivesdk
+<img width="1868" height="909" alt="Screenshot 2025-08-29 145235" src="https://github.com/user-attachments/assets/6cb6db6f-7994-4231-894e-204276fa1c6a" />
+<img width="1779" height="908" alt="Screenshot 2025-08-29 145505" src="https://github.com/user-attachments/assets/c711d944-df6c-40ba-abf7-315af47b4524" />
+
 ---
 
 📂 Project Structure
@@ -165,10 +168,13 @@ Build a complete frontend with React/Next.js.
 
 ---
 
-👨‍💻 Contributors
+👨‍💻 Contributors and contact details
 
 Adityansh 
+ak3499@srmist.edu.in
 
 Sreejit hait
+sh2651@srmist.edu.in
 
 Tosham behera
+tb5173@srmist.edu.in
