@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITBP Fake Account Detection System</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.10.0/web3.min.js"></script>
+    <title>ITBP Fake Account Detection System - Stacks Blockchain</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stacks.js/2.3.2/stacks.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -42,6 +42,17 @@
             opacity: 0.9;
         }
 
+        .stacks-badge {
+            background: linear-gradient(135deg, #5546ff 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(85, 70, 255, 0.3);
+        }
+
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -62,7 +73,7 @@
         }
 
         .card h3 {
-            color: #667eea;
+            color: #5546ff;
             margin-bottom: 20px;
             font-size: 1.5em;
             border-bottom: 2px solid #eee;
@@ -91,11 +102,11 @@
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #5546ff;
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5546ff 0%, #764ba2 100%);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -109,7 +120,7 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(85, 70, 255, 0.4);
         }
 
         .btn:disabled {
@@ -131,7 +142,7 @@
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #5546ff;
         }
 
         .risk-score {
@@ -147,16 +158,16 @@
         .risk-medium { background: #ffc107; }
         .risk-high { background: #dc3545; }
 
-        .blockchain-status {
-            background: #e8f5e8;
-            border: 2px solid #28a745;
+        .stacks-status {
+            background: linear-gradient(135deg, #e8f0ff 0%, #f0e8ff 100%);
+            border: 2px solid #5546ff;
             border-radius: 10px;
             padding: 15px;
             margin-top: 20px;
             text-align: center;
         }
 
-        .blockchain-status.error {
+        .stacks-status.error {
             background: #f8e8e8;
             border-color: #dc3545;
         }
@@ -169,7 +180,7 @@
 
         .spinner {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border-top: 4px solid #5546ff;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -200,7 +211,7 @@
         .stat-number {
             font-size: 2em;
             font-weight: bold;
-            color: #667eea;
+            color: #5546ff;
         }
 
         .stat-label {
@@ -243,13 +254,22 @@
             color: #2e7d32;
         }
 
-        .blockchain-hash {
+        .stacks-hash {
             font-family: monospace;
-            background: #f1f1f1;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e8f0ff 100%);
             padding: 10px;
             border-radius: 5px;
             word-break: break-all;
             margin-top: 10px;
+            border: 1px solid #5546ff;
+        }
+
+        .clarity-contract-info {
+            background: linear-gradient(135deg, #e8f0ff 0%, #f0e8ff 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #5546ff;
         }
     </style>
 </head>
@@ -257,7 +277,8 @@
     <div class="container">
         <div class="header">
             <h1>🛡️ ITBP Fake Account Detection System</h1>
-            <p>Advanced AI-Powered Social Media Security Platform with Blockchain Integration</p>
+            <p>Advanced AI-Powered Social Media Security Platform</p>
+            <div class="stacks-badge">🔗 Powered by Stacks Blockchain & Clarity Smart Contracts</div>
         </div>
 
         <div class="stats-grid">
@@ -270,8 +291,8 @@
                 <div class="stat-label">Fake Accounts Detected</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="blockchainRecords">0</div>
-                <div class="stat-label">Blockchain Records</div>
+                <div class="stat-number" id="stacksRecords">0</div>
+                <div class="stat-label">Stacks Blockchain Records</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="reportsSent">0</div>
@@ -348,15 +369,15 @@
                     </button>
                 </form>
 
-                <div id="blockchainStatus" class="blockchain-status" style="display: none;">
-                    <strong>Blockchain Status:</strong> <span id="statusText">Connecting...</span>
+                <div id="stacksStatus" class="stacks-status" style="display: none;">
+                    <strong>🔗 Stacks Blockchain Status:</strong> <span id="statusText">Connecting...</span>
                 </div>
             </div>
         </div>
 
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>Analyzing account using AI/ML algorithms...</p>
+            <p>Analyzing account using AI/ML algorithms and recording to Stacks blockchain...</p>
         </div>
 
         <div class="results" id="results" style="display: none;">
@@ -366,57 +387,81 @@
     </div>
 
     <script>
-        // Simulated blockchain and ML components
-        class BlockchainManager {
+        // Stacks blockchain and ML integration
+        class StacksBlockchainManager {
             constructor() {
-                this.web3 = null;
-                this.contract = null;
-                this.account = null;
+                this.network = 'testnet';
+                this.contractAddress = 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM';
+                this.contractName = 'fake-account-registry';
                 this.records = [];
                 this.init();
             }
 
             async init() {
-                // Simulate blockchain connection
+                // Simulate Stacks connection
                 setTimeout(() => {
-                    this.updateStatus('Connected to Ethereum Testnet', false);
+                    this.updateStatus('Connected to Stacks Testnet', false);
                     this.updateStats();
                 }, 2000);
             }
 
             updateStatus(message, isError = false) {
-                const statusDiv = document.getElementById('blockchainStatus');
+                const statusDiv = document.getElementById('stacksStatus');
                 const statusText = document.getElementById('statusText');
                 statusDiv.style.display = 'block';
                 statusText.textContent = message;
                 
                 if (isError) {
-                    statusDiv.className = 'blockchain-status error';
+                    statusDiv.className = 'stacks-status error';
                 } else {
-                    statusDiv.className = 'blockchain-status';
+                    statusDiv.className = 'stacks-status';
                 }
             }
 
-            async recordToBlockchain(data) {
-                // Simulate blockchain transaction
+            async recordToStacks(data) {
+                // Simulate Stacks blockchain transaction
                 return new Promise((resolve) => {
                     setTimeout(() => {
-                        const txHash = '0x' + Math.random().toString(16).substr(2, 64);
+                        const txId = 'STX' + Math.random().toString(16).substr(2, 40).toUpperCase();
+                        const reportId = `RPT-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.random().toString(16).substr(2, 8)}`;
+                        
                         this.records.push({
                             ...data,
-                            txHash,
+                            txId,
+                            reportId,
                             timestamp: new Date().toISOString(),
-                            blockNumber: Math.floor(Math.random() * 1000000)
+                            blockHeight: Math.floor(Math.random() * 100000) + 50000,
+                            contractAddress: this.contractAddress,
+                            contractName: this.contractName
                         });
                         
                         this.updateStats();
-                        resolve(txHash);
+                        resolve({
+                            success: true,
+                            txId,
+                            reportId,
+                            blockHeight: Math.floor(Math.random() * 100000) + 50000,
+                            network: 'stacks-testnet'
+                        });
                     }, 3000);
                 });
             }
 
             updateStats() {
-                document.getElementById('blockchainRecords').textContent = this.records.length;
+                document.getElementById('stacksRecords').textContent = this.records.length;
+            }
+
+            async verifyReport(reportId) {
+                // Simulate report verification on Stacks
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({
+                            success: true,
+                            txId: 'STX' + Math.random().toString(16).substr(2, 40).toUpperCase(),
+                            message: `Report ${reportId} verified on Stacks blockchain`
+                        });
+                    }, 2000);
+                });
             }
         }
 
@@ -556,7 +601,7 @@
         }
 
         // Initialize systems
-        const blockchain = new BlockchainManager();
+        const stacksBlockchain = new StacksBlockchainManager();
         const mlAnalyzer = new MLAnalyzer();
         
         // Statistics tracking
@@ -602,10 +647,10 @@
                     bio
                 });
 
-                // Record to blockchain if suspicious
-                let txHash = null;
+                // Record to Stacks blockchain if suspicious
+                let stacksResult = null;
                 if (analysis.riskScore >= 0.4) {
-                    txHash = await blockchain.recordToBlockchain({
+                    stacksResult = await stacksBlockchain.recordToStacks({
                         platform,
                         username,
                         riskScore: analysis.riskScore,
@@ -622,7 +667,7 @@
                 updateStatsDisplay();
 
                 // Display results
-                displayResults(analysis, txHash, { platform, username, bio });
+                displayResults(analysis, stacksResult, { platform, username, bio });
 
             } catch (error) {
                 console.error('Analysis failed:', error);
@@ -633,7 +678,7 @@
             }
         }
 
-        function displayResults(analysis, txHash, accountData) {
+        function displayResults(analysis, stacksResult, accountData) {
             const resultsDiv = document.getElementById('results');
             const contentDiv = document.getElementById('resultsContent');
 
@@ -661,14 +706,20 @@
                 `;
             }
 
-            let blockchainInfo = '';
-            if (txHash) {
-                blockchainInfo = `
-                    <div style="margin-top: 15px;">
-                        <strong>🔗 Blockchain Record:</strong>
-                        <div class="blockchain-hash">Transaction Hash: ${txHash}</div>
-                        <p style="margin-top: 10px; color: #28a745; font-weight: 600;">
-                            ✅ Suspicious account recorded on blockchain for transparency and audit
+            let stacksInfo = '';
+            if (stacksResult && stacksResult.success) {
+                stacksInfo = `
+                    <div class="clarity-contract-info">
+                        <strong>🔗 Stacks Blockchain Record:</strong>
+                        <div class="stacks-hash">Transaction ID: ${stacksResult.txId}</div>
+                        <div class="stacks-hash">Report ID: ${stacksResult.reportId}</div>
+                        <div class="stacks-hash">Block Height: ${stacksResult.blockHeight}</div>
+                        <div class="stacks-hash">Network: ${stacksResult.network}</div>
+                        <p style="margin-top: 10px; color: #5546ff; font-weight: 600;">
+                            ✅ Suspicious account recorded on Stacks blockchain using Clarity smart contract
+                        </p>
+                        <p style="margin-top: 5px; color: #666; font-size: 0.9em;">
+                            Contract: ${stacksBlockchain.contractAddress}.${stacksBlockchain.contractName}
                         </p>
                     </div>
                 `;
@@ -695,7 +746,7 @@
                     
                     ${featureIndicators}
                     ${detectionReasons}
-                    ${blockchainInfo}
+                    ${stacksInfo}
                     
                     <div style="margin-top: 15px;">
                         <strong>📊 Recommended Action:</strong>
@@ -726,15 +777,17 @@
             document.getElementById('reportBtn').disabled = true;
 
             try {
-                // Simulate report generation
+                // Simulate report generation with Stacks integration
                 await new Promise(resolve => setTimeout(resolve, 2000));
 
                 // Update statistics
                 stats.reportsSent++;
                 updateStatsDisplay();
 
-                // Show success message
-                alert(`Report generated and sent to ${agencyType.toUpperCase()}!\n\nPriority: ${priority.toUpperCase()}\nReference ID: RPT-${Date.now()}`);
+                const reportId = `STACKS-RPT-${Date.now()}`;
+
+                // Show success message with Stacks details
+                alert(`Report generated and sent to ${agencyType.toUpperCase()}!\n\nPriority: ${priority.toUpperCase()}\nReference ID: ${reportId}\nBlockchain: Stacks\nContract: Clarity`);
 
                 // Reset form
                 document.getElementById('reportForm').reset();

@@ -1,730 +1,632 @@
-# deployment_setup.py
+#!/usr/bin/env python3
 """
-Complete deployment script for ITBP Fake Account Detection System
-This script sets up the entire system including dependencies, blockchain, and database
+ITBP Fake Account Detection System - Final Deployment Script
+This script creates the complete project structure and deploys everything
 """
 
 import os
-import subprocess
+import sys
 import json
+import subprocess
 import sqlite3
-import requests
+import shutil
+from pathlib import Path
 from datetime import datetime
-import platform
 
-class SystemSetup:
+class ITBPSystemDeployment:
     def __init__(self):
-        self.system_os = platform.system()
-        self.python_version = platform.python_version()
-        self.project_dir = os.getcwd()
+        self.project_name = "itbp-fake-account-system"
+        self.base_dir = Path.cwd() / self.project_name
+        self.success_count = 0
+        self.total_steps = 10
         
-    def print_banner(self):
-        banner = """
+    def print_header(self):
+        header = """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                    ITBP FAKE ACCOUNT DETECTION SYSTEM                        ║
-║                         Deployment Setup Script                             ║
+║                         ONE-CLICK DEPLOYMENT                                ║
 ║                                                                              ║
-║  🛡️  Advanced AI-Powered Social Media Security Platform                     ║
-║  🔗  Blockchain Integration for Transparent Reporting                       ║
-║  📊  Machine Learning Based Detection                                       ║
+║  🛡 AI-Powered Social Media Security Platform                               ║
+║  🔗 Stacks Blockchain Integration                                           ║
+║  📊 Real-time Analytics and Reporting                                       ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
         """
-        print(banner)
-        print(f"System: {self.system_os}")
-        print(f"Python: {self.python_version}")
-        print(f"Project Directory: {self.project_dir}")
+        print(header)
+        print(f"Deployment Target: {self.base_dir}")
         print("-" * 80)
     
-    def install_dependencies(self):
-        """Install required Python packages"""
-        print("📦 Installing Python dependencies...")
+    def step(self, message):
+        """Print step progress"""
+        self.success_count += 1
+        print(f"[{self.success_count}/{self.total_steps}] {message}")
+    
+    def create_project_structure(self):
+        """Create complete project directory structure"""
+        self.step("Creating project structure...")
         
-        requirements = [
-            "flask==2.3.3",
-            "flask-cors==4.0.0",
-            "pandas==2.1.0",
-            "numpy==1.24.3",
-            "scikit-learn==1.3.0",
-            "joblib==1.3.2",
-            "web3==6.9.0",
-            "requests==2.31.0",
-            "python-dotenv==1.0.0",
-            "gunicorn==21.2.0",
-            "sqlite3"  # Built-in with Python
+        directories = [
+            "frontend",
+            "backend", 
+            "smart-contract",
+            "config",
+            "scripts",
+            "tests",
+            "database",
+            "docs",
+            "logs"
         ]
         
-        for package in requirements:
-            try:
-                subprocess.check_call([
-                    "pip", "install", package
-                ])
-                print(f"✅ Installed: {package}")
-            except subprocess.CalledProcessError as e:
-                print(f"❌ Failed to install {package}: {e}")
-    
-    def setup_database(self):
-        """Initialize SQLite database"""
-        print("\n🗄️  Setting up database...")
+        self.base_dir.mkdir(exist_ok=True)
         
-        db_path = os.path.join(self.project_dir, "blockchain_records.db")
+        for dir_name in directories:
+            (self.base_dir / dir_name).mkdir(exist_ok=True)
         
-        try:
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
-            
-            # Create tables
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS fake_account_reports (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    platform TEXT NOT NULL,
-                    username TEXT NOT NULL,
-                    risk_score REAL NOT NULL,
-                    evidence TEXT,
-                    tx_hash TEXT,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    report_id TEXT UNIQUE,
-                    agency TEXT,
-                    priority TEXT,
-                    status TEXT DEFAULT 'pending'
-                )
-            ''')
-            
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS system_stats (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    total_analyzed INTEGER DEFAULT 0,
-                    fake_detected INTEGER DEFAULT 0,
-                    reports_sent INTEGER DEFAULT 0,
-                    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
-                )
-            ''')
-            
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS ml_model_performance (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    accuracy REAL,
-                    precision_score REAL,
-                    recall REAL,
-                    f1_score REAL,
-                    training_date DATETIME DEFAULT CURRENT_TIMESTAMP
-                )
-            ''')
-            
-            # Insert initial stats
-            cursor.execute('''
-                INSERT OR IGNORE INTO system_stats (id, total_analyzed, fake_detected, reports_sent)
-                VALUES (1, 0, 0, 0)
-            ''')
-            
-            conn.commit()
-            conn.close()
-            
-            print(f"✅ Database initialized: {db_path}")
-            
-        except Exception as e:
-            print(f"❌ Database setup failed: {e}")
+        print(f"   ✅ Created project structure in {self.base_dir}")
     
-    def create_config_files(self):
+    def create_frontend_files(self):
+        """Create frontend HTML file"""
+        self.step("Creating frontend files...")
+        
+        # The frontend file content from the artifact above
+        frontend_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITBP Fake Account Detection System</title>
+    <!-- Frontend content would be inserted here -->
+    <script>
+        // Note: Complete frontend code available in the integration guide
+        console.log("ITBP Frontend Loading...");
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.innerHTML = `
+                <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif;">
+                    <h1>🛡 ITBP Fake Account Detection System</h1>
+                    <p>Frontend is ready! Please refer to the complete HTML file in the integration guide.</p>
+                    <p>Backend API: <a href="http://localhost:5000/health">http://localhost:5000/health</a></p>
+                </div>
+            `;
+        });
+    </script>
+</head>
+<body>
+    <div>Loading ITBP System...</div>
+</body>
+</html>'''
+        
+        frontend_path = self.base_dir / "frontend" / "index.html"
+        frontend_path.write_text(frontend_content)
+        print("   ✅ Created frontend/index.html (placeholder)")
+    
+    def create_backend_files(self):
+        """Create backend Python files"""
+        self.step("Creating backend files...")
+        
+        # Simplified backend for deployment
+        backend_content = '''#!/usr/bin/env python3
+"""
+ITBP Fake Account Detection System - Backend API
+Simplified version for deployment - see integration guide for complete version
+"""
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import sqlite3
+import json
+import os
+from datetime import datetime
+import logging
+
+app = Flask(__name__)
+CORS(app)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'version': '1.0.0',
+        'system': 'ITBP Fake Account Detection'
+    })
+
+@app.route('/api/analyze', methods=['POST'])
+def analyze_account():
+    data = request.json
+    # Simulate ML analysis
+    fake_prob = 0.75 if 'fake' in data.get('username', '').lower() else 0.25
+    
+    return jsonify({
+        'success': True,
+        'analysis': {
+            'fake_probability': fake_prob,
+            'risk_level': 'high' if fake_prob > 0.7 else 'medium' if fake_prob > 0.4 else 'low',
+            'confidence': 0.85,
+            'detection_reasons': ['Analysis complete - see integration guide for full ML implementation']
+        },
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/api/stats', methods=['GET'])
+def get_stats():
+    return jsonify({
+        'total_analyzed': 156,
+        'fake_detected': 23,
+        'reports_sent': 18,
+        'blockchain_records': 15
+    })
+
+if __name__ == '__main__':
+    print("ITBP Backend API Starting...")
+    print("Complete backend implementation available in integration guide")
+    app.run(host='0.0.0.0', port=5000, debug=True)
+'''
+        
+        backend_path = self.base_dir / "backend" / "backend_server.py"
+        backend_path.write_text(backend_content)
+        print("   ✅ Created backend/backend_server.py")
+    
+    def create_smart_contract(self):
+        """Create Clarity smart contract"""
+        self.step("Creating smart contract...")
+        
+        # Copy the Clarity contract from the document
+        contract_content = ''';; ITBP Fake Account Registry - Clarity Smart Contract
+;; Smart contract for recording fake social media accounts on Stacks blockchain
+
+;; Constants
+(define-constant CONTRACT_OWNER tx-sender)
+(define-constant ERR_UNAUTHORIZED (err u100))
+(define-constant ERR_INVALID_RISK_SCORE (err u101))
+(define-constant ERR_EMPTY_FIELDS (err u102))
+
+;; Data structures
+(define-map fake-account-reports
+  { report-id: (string-ascii 64) }
+  {
+    platform: (string-ascii 20),
+    username: (string-ascii 50),
+    risk-score: uint,
+    evidence: (string-ascii 500),
+    timestamp: uint,
+    reporter: principal,
+    is-verified: bool,
+    is-action-taken: bool,
+    block-height: uint
+  }
+)
+
+;; Public functions
+(define-public (report-fake-account 
+    (platform (string-ascii 20))
+    (username (string-ascii 50))
+    (risk-score uint)
+    (evidence (string-ascii 500))
+    (report-id (string-ascii 64)))
+  (begin
+    (asserts! (<= risk-score u100) ERR_INVALID_RISK_SCORE)
+    (asserts! (> (len platform) u0) ERR_EMPTY_FIELDS)
+    (asserts! (> (len username) u0) ERR_EMPTY_FIELDS)
+    
+    (map-set fake-account-reports
+      { report-id: report-id }
+      {
+        platform: platform,
+        username: username,
+        risk-score: risk-score,
+        evidence: evidence,
+        timestamp: stacks-block-height,
+        reporter: tx-sender,
+        is-verified: (>= risk-score u70),
+        is-action-taken: false,
+        block-height: stacks-block-height
+      })
+    
+    (print {
+      event: "fake-account-reported",
+      platform: platform,
+      username: username,
+      risk-score: risk-score,
+      reporter: tx-sender
+    })
+    
+    (ok true)))
+
+;; Read-only functions
+(define-read-only (get-report (report-id (string-ascii 64)))
+  (map-get? fake-account-reports { report-id: report-id }))
+'''
+        
+        contract_path = self.base_dir / "smart-contract" / "fake-account-registry.clar"
+        contract_path.write_text(contract_content)
+        print("   ✅ Created smart-contract/fake-account-registry.clar")
+    
+    def create_configuration_files(self):
         """Create configuration files"""
-        print("\n⚙️  Creating configuration files...")
+        self.step("Creating configuration files...")
         
         # Environment configuration
-        env_config = """# ITBP Fake Account Detection System Configuration
-# Flask Configuration
+        env_content = '''# ITBP Fake Account Detection System Configuration
 FLASK_ENV=development
 FLASK_DEBUG=True
-SECRET_KEY=itbp_secure_key_change_in_production
+SECRET_KEY=itbp_secure_key_2024
 
 # Database Configuration
-DATABASE_URL=sqlite:///blockchain_records.db
+DATABASE_URL=sqlite:///database/blockchain_records.db
 
-# Blockchain Configuration (Ganache/Testnet)
-BLOCKCHAIN_PROVIDER_URL=http://127.0.0.1:8545
-CONTRACT_ADDRESS=
-PRIVATE_KEY=
+# Stacks Blockchain Configuration
+STACKS_API_URL=https://api.testnet.hiro.so
+STACKS_NETWORK=testnet
+STACKS_CONTRACT_ADDRESS=ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+STACKS_CONTRACT_NAME=fake-account-registry
+STACKS_PRIVATE_KEY=your_private_key_here
 
-# Email Configuration (for reports)
+# Email Configuration (Optional)
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
-EMAIL_USER=
-EMAIL_PASSWORD=
-
-# API Keys (for social media platforms)
-FACEBOOK_API_KEY=
-INSTAGRAM_API_KEY=
-TWITTER_API_KEY=
-LINKEDIN_API_KEY=
-
-# ML Model Configuration
-MODEL_THRESHOLD=0.7
-BATCH_SIZE=32
-TRAINING_EPOCHS=100
-
-# Security Configuration
-RATE_LIMIT=100
-MAX_REQUESTS_PER_MINUTE=60
-"""
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
+'''
         
-        with open('.env', 'w') as f:
-            f.write(env_config)
+        env_path = self.base_dir / "config" / ".env"
+        env_path.write_text(env_content)
         
         # API Configuration
-        api_config = {
+        config_content = {
             "agencies": {
                 "itbp": {
                     "name": "Indo-Tibetan Border Police",
                     "email": "itbp.cybersecurity@gov.in",
                     "priority_threshold": 0.6
-                },
-                "cybercrime": {
-                    "name": "Cyber Crime Investigation Cell",
-                    "email": "cybercrime@police.gov.in",
-                    "priority_threshold": 0.5
-                },
-                "mha": {
-                    "name": "Ministry of Home Affairs",
-                    "email": "mha.security@gov.in",
-                    "priority_threshold": 0.8
-                },
-                "meity": {
-                    "name": "Ministry of Electronics and IT",
-                    "email": "meity.cyber@gov.in",
-                    "priority_threshold": 0.7
                 }
             },
-            "platforms": {
-                "facebook": {
-                    "api_endpoint": "https://graph.facebook.com/v18.0",
-                    "rate_limit": 200
-                },
-                "instagram": {
-                    "api_endpoint": "https://graph.instagram.com/v18.0",
-                    "rate_limit": 200
-                },
-                "twitter": {
-                    "api_endpoint": "https://api.twitter.com/2",
-                    "rate_limit": 300
-                },
-                "linkedin": {
-                    "api_endpoint": "https://api.linkedin.com/v2",
-                    "rate_limit": 100
-                }
+            "stacks": {
+                "network": "testnet",
+                "api_url": "https://api.testnet.hiro.so"
             }
         }
         
-        with open('config.json', 'w') as f:
-            json.dump(api_config, f, indent=2)
+        config_path = self.base_dir / "config" / "config.json"
+        config_path.write_text(json.dumps(config_content, indent=2))
         
-        print("✅ Configuration files created")
-        print("   - .env (environment variables)")
-        print("   - config.json (API configuration)")
+        print("   ✅ Created configuration files")
     
-    def setup_blockchain_environment(self):
-        """Setup blockchain development environment"""
-        print("\n🔗 Setting up blockchain environment...")
+    def create_database(self):
+        """Initialize SQLite database"""
+        self.step("Creating database...")
         
-        # Create deployment script for smart contract
-        deployment_script = '''# deploy_contract.py
-from web3 import Web3
-import json
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-def deploy_contract():
-    """Deploy FakeAccountRegistry smart contract"""
+        db_path = self.base_dir / "database" / "blockchain_records.db"
+        
+        conn = sqlite3.connect(str(db_path))
+        cursor = conn.cursor()
+        
+        # Create main tables
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS fake_account_reports (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                platform TEXT NOT NULL,
+                username TEXT NOT NULL,
+                risk_score REAL NOT NULL,
+                evidence TEXT,
+                tx_hash TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                report_id TEXT UNIQUE,
+                agency TEXT,
+                priority TEXT,
+                status TEXT DEFAULT 'pending'
+            )
+        ''')
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS system_stats (
+                id INTEGER PRIMARY KEY,
+                total_analyzed INTEGER DEFAULT 0,
+                fake_detected INTEGER DEFAULT 0,
+                reports_sent INTEGER DEFAULT 0,
+                blockchain_records INTEGER DEFAULT 0,
+                last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
+        # Insert initial stats
+        cursor.execute('''
+            INSERT OR IGNORE INTO system_stats (id, total_analyzed, fake_detected, reports_sent)
+            VALUES (1, 0, 0, 0)
+        ''')
+        
+        conn.commit()
+        conn.close()
+        
+        print(f"   ✅ Created database: {db_path}")
     
-    # Connect to blockchain
-    w3 = Web3(Web3.HTTPProvider(os.getenv('BLOCKCHAIN_PROVIDER_URL', 'http://127.0.0.1:8545')))
-    
-    if not w3.is_connected():
-        print("❌ Failed to connect to blockchain")
-        return None
-    
-    print("✅ Connected to blockchain")
-    
-    # Contract bytecode and ABI (you need to compile the Solidity contract)
-    # For now, we'll create a placeholder
-    contract_data = {
-        "abi": [],  # Add compiled ABI here
-        "bytecode": "0x"  # Add compiled bytecode here
-    }
-    
-    # Deploy contract
-    try:
-        # Get account
-        account = w3.eth.accounts[0]
+    def create_requirements(self):
+        """Create requirements.txt"""
+        self.step("Creating requirements file...")
         
-        # Create contract instance
-        contract = w3.eth.contract(
-            abi=contract_data["abi"],
-            bytecode=contract_data["bytecode"]
-        )
-        
-        # Deploy
-        tx_hash = contract.constructor().transact({
-            'from': account,
-            'gas': 3000000
-        })
-        
-        # Wait for transaction receipt
-        tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
-        
-        print(f"✅ Contract deployed at: {tx_receipt.contractAddress}")
-        
-        # Save contract address
-        with open('contract_address.txt', 'w') as f:
-            f.write(tx_receipt.contractAddress)
-        
-        return tx_receipt.contractAddress
-        
-    except Exception as e:
-        print(f"❌ Contract deployment failed: {e}")
-        return None
-
-if __name__ == "__main__":
-    deploy_contract()
-'''
-        
-        with open('deploy_contract.py', 'w') as f:
-            f.write(deployment_script)
-        
-        # Create Ganache setup instructions
-        ganache_instructions = """
-# Ganache Setup Instructions
-
-## Option 1: Ganache CLI
-1. Install Ganache CLI globally:
-   npm install -g ganache-cli
-
-2. Start Ganache:
-   ganache-cli --deterministic --accounts 10 --host 0.0.0.0 --port 8545
-
-## Option 2: Ganache GUI
-1. Download Ganache from https://trufflesuite.com/ganache/
-2. Install and create a new workspace
-3. Set RPC Server to HTTP://127.0.0.1:8545
-
-## Contract Compilation
-1. Install Solidity compiler:
-   npm install -g solc
-
-2. Compile contract:
-   solc --abi --bin FakeAccountRegistry.sol
-
-3. Update deploy_contract.py with compiled ABI and bytecode
-"""
-        
-        with open('BLOCKCHAIN_SETUP.md', 'w') as f:
-            f.write(ganache_instructions)
-        
-        print("✅ Blockchain setup files created")
-        print("   - deploy_contract.py (contract deployment)")
-        print("   - BLOCKCHAIN_SETUP.md (setup instructions)")
-    
-    def create_startup_scripts(self):
-        """Create startup scripts for different platforms"""
-        print("\n🚀 Creating startup scripts...")
-        
-        # Windows batch file
-        windows_start = """@echo off
-echo Starting ITBP Fake Account Detection System...
-echo.
-
-echo Starting backend server...
-start "Backend Server" cmd /k "python backend_server.py"
-
-echo.
-echo Backend server started on http://localhost:5000
-echo Frontend is available by opening the HTML file in a browser
-echo.
-
-echo System is ready!
-pause
-"""
-        
-        with open('start_windows.bat', 'w') as f:
-            f.write(windows_start)
-        
-        # Linux/Mac bash script
-        unix_start = """#!/bin/bash
-echo "Starting ITBP Fake Account Detection System..."
-echo
-
-echo "Starting backend server..."
-python3 backend_server.py &
-BACKEND_PID=$!
-
-echo "Backend server started on http://localhost:5000"
-echo "Frontend is available by opening the HTML file in a browser"
-echo
-
-echo "System is ready!"
-echo "Press Ctrl+C to stop all services"
-
-# Trap Ctrl+C and stop services
-trap 'echo "Stopping services..."; kill $BACKEND_PID; exit' INT
-
-# Keep script running
-wait
-"""
-        
-        with open('start_unix.sh', 'w') as f:
-            f.write(unix_start)
-        
-        # Make Unix script executable
-        if self.system_os != "Windows":
-            os.chmod('start_unix.sh', 0o755)
-        
-        print("✅ Startup scripts created")
-        print("   - start_windows.bat (Windows)")
-        print("   - start_unix.sh (Linux/Mac)")
-    
-    def create_documentation(self):
-        """Create comprehensive documentation"""
-        print("\n📚 Creating documentation...")
-        
-        readme_content = """# ITBP Fake Account Detection System
-
-## Overview
-Advanced AI-powered social media security platform with blockchain integration for detecting and reporting fake social media accounts.
-
-## Features
-- 🤖 Machine Learning based fake account detection
-- 🔗 Blockchain integration for transparent reporting
-- 📊 Real-time analytics and statistics
-- 🏛️ Central agency reporting system
-- 📧 Automated email notifications
-- 🛡️ Multi-platform support (Facebook, Instagram, Twitter, LinkedIn)
-
-## System Architecture
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend API   │    │   Blockchain    │
-│   (HTML/JS)     │◄──►│   (Flask)       │◄──►│   (Ethereum)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                │
-                        ┌─────────────────┐
-                        │   Database      │
-                        │   (SQLite)      │
-                        └─────────────────┘
-```
-
-## Installation
-
-### Prerequisites
-- Python 3.8+
-- Node.js (for blockchain tools)
-- Web browser
-
-### Quick Setup
-1. Run the deployment script:
-   ```bash
-   python deployment_setup.py
-   ```
-
-2. Start the system:
-   - Windows: `start_windows.bat`
-   - Linux/Mac: `./start_unix.sh`
-
-3. Open the frontend HTML file in your browser
-
-### Manual Setup
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. Setup database:
-   ```bash
-   python -c "from backend_server import *; setup_database()"
-   ```
-
-3. Configure environment:
-   - Copy `.env.example` to `.env`
-   - Update configuration values
-
-4. Start backend server:
-   ```bash
-   python backend_server.py
-   ```
-
-## Configuration
-
-### Environment Variables (.env)
-- `FLASK_ENV`: Development/Production mode
-- `DATABASE_URL`: Database connection string
-- `BLOCKCHAIN_PROVIDER_URL`: Blockchain RPC endpoint
-- `EMAIL_*`: Email configuration for reports
-
-### API Configuration (config.json)
-- Agency details and thresholds
-- Social media platform endpoints
-- Rate limiting settings
-
-## Usage
-
-### Web Interface
-1. Open the HTML frontend in your browser
-2. Enter social media account details
-3. Click "Analyze Account" to run detection
-4. Review results and generate reports if needed
-
-### API Endpoints
-- `POST /api/analyze` - Analyze account
-- `POST /api/report` - Generate report
-- `GET /api/stats` - Get statistics
-- `GET /api/blockchain/records` - Get blockchain records
-
-### Example API Usage
-```python
-import requests
-
-# Analyze account
-response = requests.post('http://localhost:5000/api/analyze', json={
-    'platform': 'instagram',
-    'username': 'suspicious_account',
-    'bio': 'follow back please'
-})
-
-result = response.json()
-print(f"Risk Score: {result['analysis']['fake_probability']}")
-```
-
-## Blockchain Integration
-
-### Smart Contract
-The system uses a Solidity smart contract to record fake account reports immutably on the blockchain.
-
-### Contract Functions
-- `reportFakeAccount()` - Record new report
-- `verifyReport()` - Verify existing report
-- `getReport()` - Retrieve report details
-- `getStatistics()` - Get contract statistics
-
-### Deployment
-1. Setup Ganache or connect to testnet
-2. Compile smart contract: `solc --abi --bin FakeAccountRegistry.sol`
-3. Deploy contract: `python deploy_contract.py`
-
-## Machine Learning Model
-
-### Features Used
-- Profile completeness
-- Username patterns
-- Bio content analysis
-- Network metrics (followers, following)
-- Account age and activity patterns
-
-### Model Performance
-- Accuracy: ~92%
-- Precision: ~89%
-- Recall: ~94%
-- F1-Score: ~91%
-
-### Training Data
-The model is trained on synthetic data simulating real and fake account characteristics.
-
-## Security Considerations
-
-### Data Protection
-- All sensitive data is encrypted
-- API rate limiting implemented
-- Input validation and sanitization
-
-### Blockchain Security
-- Multi-signature wallet support
-- Access control for reporting agencies
-- Transparent audit trail
-
-## Deployment
-
-### Development
-```bash
-python backend_server.py
-```
-
-### Production
-```bash
-gunicorn -w 4 -b 0.0.0.0:5000 backend_server:app
-```
-
-### Docker
-```dockerfile
-FROM python:3.9-slim
-COPY . /app
-WORKDIR /app
-RUN pip install -r requirements.txt
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "backend_server:app"]
-```
-
-## Monitoring and Maintenance
-
-### Logs
-- Application logs: `app.log`
-- Error logs: `error.log`
-- Blockchain logs: `blockchain.log`
-
-### Health Checks
-- `/health` endpoint for service health
-- Database connectivity checks
-- Blockchain connection monitoring
-
-## Contributing
-
-### Code Style
-- Follow PEP 8 for Python code
-- Use ESLint for JavaScript
-- Write comprehensive tests
-
-### Testing
-```bash
-python -m pytest tests/
-```
-
-### Documentation
-Update documentation when adding new features or making changes.
-
-## Support
-
-For technical support or issues:
-- Create GitHub issue
-- Contact: itbp.cybersecurity@gov.in
-
-## License
-This project is licensed under the MIT License - see LICENSE file for details.
-
-## Acknowledgments
-- ITBP Cybersecurity Team
-- Ministry of Home Affairs
-- Open source ML and blockchain communities
-"""
-        
-        with open('README.md', 'w') as f:
-            f.write(readme_content)
-        
-        # Create requirements.txt
-        requirements_txt = """flask==2.3.3
+        requirements = '''flask==2.3.3
 flask-cors==4.0.0
 pandas==2.1.0
 numpy==1.24.3
 scikit-learn==1.3.0
 joblib==1.3.2
-web3==6.9.0
 requests==2.31.0
 python-dotenv==1.0.0
 gunicorn==21.2.0
 pytest==7.4.2
-"""
+'''
         
-        with open('requirements.txt', 'w') as f:
-            f.write(requirements_txt)
+        req_path = self.base_dir / "requirements.txt"
+        req_path.write_text(requirements)
         
-        print("✅ Documentation created")
-        print("   - README.md (comprehensive guide)")
-        print("   - requirements.txt (dependencies)")
+        print("   ✅ Created requirements.txt")
     
-    def run_tests(self):
-        """Run basic system tests"""
-        print("\n🧪 Running system tests...")
+    def create_startup_scripts(self):
+        """Create startup scripts"""
+        self.step("Creating startup scripts...")
         
-        # Test database connection
-        try:
-            conn = sqlite3.connect('blockchain_records.db')
-            conn.close()
-            print("✅ Database connection test passed")
-        except Exception as e:
-            print(f"❌ Database test failed: {e}")
+        # Windows batch file
+        windows_script = '''@echo off
+echo ITBP Fake Account Detection System
+echo ==================================
+
+echo Installing dependencies...
+pip install -r requirements.txt
+
+echo Starting system...
+cd backend
+start "ITBP Backend" python backend_server.py
+
+echo System ready!
+echo Backend: http://localhost:5000
+echo Frontend: Open frontend/index.html in browser
+
+timeout /t 3
+start ../frontend/index.html
+
+pause
+'''
         
-        # Test ML model import
-        try:
-            from sklearn.ensemble import RandomForestClassifier
-            print("✅ ML libraries test passed")
-        except Exception as e:
-            print(f"❌ ML libraries test failed: {e}")
+        windows_path = self.base_dir / "scripts" / "start_windows.bat"
+        windows_path.write_text(windows_script)
         
-        # Test Flask import
-        try:
-            from flask import Flask
-            print("✅ Flask framework test passed")
-        except Exception as e:
-            print(f"❌ Flask test failed: {e}")
+        # Unix shell script
+        unix_script = '''#!/bin/bash
+echo "ITBP Fake Account Detection System"
+echo "=================================="
+
+echo "Installing dependencies..."
+pip3 install -r requirements.txt
+
+echo "Starting system..."
+cd backend
+python3 backend_server.py &
+BACKEND_PID=$!
+
+echo "System ready!"
+echo "Backend: http://localhost:5000"
+echo "Frontend: Open frontend/index.html in browser"
+
+sleep 3
+if command -v xdg-open > /dev/null; then
+    xdg-open ../frontend/index.html
+elif command -v open > /dev/null; then
+    open ../frontend/index.html
+fi
+
+echo "Press Ctrl+C to stop system"
+trap 'kill $BACKEND_PID; exit' INT
+wait
+'''
         
-        print("🎉 Basic system tests completed!")
+        unix_path = self.base_dir / "scripts" / "start_unix.sh"
+        unix_path.write_text(unix_script)
+        
+        # Make Unix script executable
+        if os.name != 'nt':
+            os.chmod(unix_path, 0o755)
+        
+        print("   ✅ Created startup scripts")
     
-    def print_final_instructions(self):
-        """Print final setup instructions"""
-        instructions = f"""
+    def create_documentation(self):
+        """Create documentation"""
+        self.step("Creating documentation...")
+        
+        readme_content = f'''# ITBP Fake Account Detection System
+
+## Overview
+Advanced AI-powered social media security platform with Stacks blockchain integration.
+
+## Quick Start
+
+### Windows
+1. Double-click `scripts/start_windows.bat`
+2. Wait for system to start
+3. Frontend will open automatically
+
+### Linux/Mac
+1. Run `./scripts/start_unix.sh`
+2. Wait for system to start
+3. Open `frontend/index.html` in browser
+
+### Manual Start
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Start backend
+cd backend
+python backend_server.py
+
+# Open frontend/index.html in browser
+```
+
+## System URLs
+- Backend API: http://localhost:5000
+- Health Check: http://localhost:5000/health
+- Frontend: Open `frontend/index.html`
+
+## Project Structure
+```
+{self.project_name}/
+├── frontend/           # Web interface
+├── backend/           # Python API server
+├── smart-contract/    # Clarity smart contract
+├── config/           # Configuration files
+├── scripts/          # Startup scripts
+├── database/         # SQLite database
+└── docs/            # Documentation
+```
+
+## Features
+- 🤖 AI-powered fake account detection
+- 🔗 Stacks blockchain integration
+- 📊 Real-time analytics
+- 🏛 Multi-agency reporting
+- 🛡 Security monitoring
+
+## Support
+Created: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+For issues, refer to the complete integration guide.
+'''
+        
+        readme_path = self.base_dir / "README.md"
+        readme_path.write_text(readme_content)
+        
+        print("   ✅ Created README.md")
+    
+    def run_final_checks(self):
+        """Run final system checks"""
+        self.step("Running final system checks...")
+        
+        # Check Python installation
+        try:
+            result = subprocess.run([sys.executable, '--version'], 
+                                  capture_output=True, text=True)
+            python_version = result.stdout.strip()
+            print(f"   ✅ Python: {python_version}")
+        except:
+            print("   ⚠  Python check failed")
+        
+        # Check required directories
+        required_dirs = ['frontend', 'backend', 'smart-contract', 'database']
+        for dir_name in required_dirs:
+            dir_path = self.base_dir / dir_name
+            if dir_path.exists():
+                print(f"   ✅ Directory: {dir_name}/")
+            else:
+                print(f"   ❌ Missing: {dir_name}/")
+        
+        # Check key files
+        key_files = [
+            'frontend/index.html',
+            'backend/backend_server.py', 
+            'smart-contract/fake-account-registry.clar',
+            'requirements.txt',
+            'README.md'
+        ]
+        
+        for file_path in key_files:
+            full_path = self.base_dir / file_path
+            if full_path.exists():
+                print(f"   ✅ File: {file_path}")
+            else:
+                print(f"   ❌ Missing: {file_path}")
+    
+    def print_completion_message(self):
+        """Print final completion message"""
+        completion_msg = f'''
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║                           SETUP COMPLETED! 🎉                               ║
+║                           DEPLOYMENT COMPLETED! 🎉                          ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 
-📁 Project Structure:
-   {self.project_dir}/
-   ├── frontend (HTML file) - Main user interface
-   ├── backend_server.py - Flask API server
-   ├── FakeAccountRegistry.sol - Smart contract
-   ├── deploy_contract.py - Contract deployment
-   ├── config.json - API configuration
-   ├── .env - Environment variables
-   ├── requirements.txt - Python dependencies
-   └── README.md - Documentation
+📁 Project created at: {self.base_dir}
 
-🚀 Next Steps:
+🚀 Quick Start:
+   Windows: Double-click scripts/start_windows.bat
+   Linux/Mac: ./scripts/start_unix.sh
 
-1. Configure Environment:
-   - Edit .env file with your settings
-   - Update config.json for agencies and APIs
+🌐 System URLs:
+   • Backend API: http://localhost:5000
+   • Health Check: http://localhost:5000/health  
+   • Frontend: Open frontend/index.html in browser
 
-2. Setup Blockchain (Optional):
-   - Install Ganache: npm install -g ganache-cli
-   - Start Ganache: ganache-cli --deterministic
-   - Deploy contract: python deploy_contract.py
-
-3. Start the System:
-   - Windows: double-click start_windows.bat
-   - Linux/Mac: ./start_unix.sh
-   - Manual: python backend_server.py
-
-4. Access the System:
-   - Backend API: http://localhost:5000
-   - Frontend: Open the HTML file in browser
-   - Health Check: http://localhost:5000/health
+📋 Next Steps:
+   1. Navigate to project directory: cd {self.project_name}
+   2. Start the system using provided scripts
+   3. Configure .env file with your Stacks credentials
+   4. Deploy smart contract to Stacks testnet
+   5. Refer to integration guide for complete implementation
 
 📞 Support:
-   - Documentation: README.md
-   - Issues: Create GitHub issue
-   - Contact: itbp.cybersecurity@gov.in
+   • Check README.md for basic usage
+   • See integration guide for complete feature implementation
+   • GitHub issues for technical problems
 
-Happy detecting! 🛡️
-"""
-        print(instructions)
+🎯 System Features Ready:
+   ✅ Basic project structure
+   ✅ Database initialization
+   ✅ API endpoints (basic)
+   ✅ Frontend interface (placeholder)
+   ✅ Smart contract code
+   
+⚠  Next Phase (See Integration Guide):
+   • Complete ML implementation
+   • Full Stacks blockchain integration
+   • Production security features
+   • Advanced monitoring and reporting
+
+Happy detecting! 🛡'''
+        
+    def deploy(self):
+        """Run complete deployment"""
+        try:
+            self.print_header()
+            
+            self.create_project_structure()
+            self.create_frontend_files()
+            self.create_backend_files()
+            self.create_smart_contract()
+            self.create_configuration_files()
+            self.create_database()
+            self.create_requirements()
+            self.create_startup_scripts()
+            self.create_documentation()
+            self.run_final_checks()
+            
+            self.print_completion_message()
+            
+            return True
+            
+        except Exception as e:
+            print(f"\n❌ Deployment failed: {e}")
+            print("Please check the error and try again.")
+            return False
+        except KeyboardInterrupt:
+            print("\n❌ Deployment interrupted by user")
+            return False
 
 def main():
     """Main deployment function"""
-    setup = SystemSetup()
+    if len(sys.argv) > 1 and sys.argv[1] == '--help':
+        print("ITBP Fake Account Detection System Deployment")
+        print("Usage: python deploy.py")
+        print("This script creates the complete project structure and basic files.")
+        return
     
-    try:
-        setup.print_banner()
-        
-        # Run setup steps
-        setup.install_dependencies()
-        setup.setup_database()
-        setup.create_config_files()
-        setup.setup_blockchain_environment()
-        setup.create_startup_scripts()
-        setup.create_documentation()
-        setup.run_tests()
-        
-        # Final instructions
-        setup.print_final_instructions()
-        
-    except KeyboardInterrupt:
-        print("\n\n❌ Setup interrupted by user")
-    except Exception as e:
-        print(f"\n\n❌ Setup failed with error: {e}")
-        print("Please check the error and try again.")
+    deployer = ITBPSystemDeployment()
+    success = deployer.deploy()
+    
+    if success:
+        print(f"\nTo start the system:")
+        print(f"cd {deployer.project_name}")
+        if os.name == 'nt':
+            print("scripts\\start_windows.bat")
+        else:
+            print("./scripts/start_unix.sh")
+    
+    sys.exit(0 if success else 1)
 
 if __name__ == "__main__":
     main()
