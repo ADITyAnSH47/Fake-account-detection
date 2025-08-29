@@ -169,6 +169,6 @@ Build a complete frontend with React/Next.js.
 
 Adityansh 
 
-Shreejit hait
+Sreejit hait
 
 Tosham behera
