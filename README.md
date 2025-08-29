@@ -10,17 +10,28 @@ video link- https://drive.google.com/file/d/1YwWp_kgcFBwmqjo2P2EQ6sWDeipjfFje/vi
 📂 Project Structure
 
 .
-├── .env                     # Environment variables (API keys, DB credentials, etc.)
-├── backend_server/          # Backend server code (API, model integration)
-├── blockchain_records/      # Blockchain-related data and logs
-├── config/                  # Configuration files
-├── deploy_contract/         # Scripts for deploying Solidity contracts
-├── deployment_setup/        # Python scripts for setting up deployment
-├── fake_account_model.pkl   # Trained ML model for fake account detection
-├── FakeAccountRegistry.clar  # clarity Smart Contract for fake account registry
-├── feature_scaler.pkl       # Scaler used for preprocessing features
-├── index.html               # Frontend entry point (UI for interaction)
-├── tfidf_vectorizer.pkl     # TF-IDF vectorizer used for text-based features
+├── .env                  
+# Environment variables (API keys, DB credentials, etc.)
+├── backend_server/
+# Backend server code (API, model integration)
+├── blockchain_records/     
+# Blockchain-related data and logs
+├── config/ 
+# Configuration files
+├── deploy_contract/
+# Scripts for deploying Solidity contracts
+├── deployment_setup/
+# Python scripts for setting up deployment
+├── fake_account_model.pkl
+# Trained ML model for fake account detection
+├── FakeAccountRegistry.clar
+# clarity Smart Contract for fake account registry
+├── feature_scaler.pkl
+# Scaler used for preprocessing features
+├── index.html    
+# Frontend entry point (UI for interaction)
+├── tfidf_vectorizer.pkl
+# TF-IDF vectorizer used for text-based features
 
 
 ---
